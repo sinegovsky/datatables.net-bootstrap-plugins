@@ -1,0 +1,9 @@
+Plugins for integrate twitter bootstrap with datatables.net.
+==============
+
+jquery.dataTables.bspagination.js:
+--------------
+Pagination plugin with combobox for easy page navigation.
+
+**how to use:** just set parameter *"sPaginationType"* to *"bootstrap"*.
+
