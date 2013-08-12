@@ -1,10 +1,11 @@
 ﻿/* API method to get paging information */
-$.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {
+$.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {    
     return {
         "iStart": oSettings._iDisplayStart,
         "iEnd": oSettings.fnDisplayEnd(),
         "iLength": oSettings._iDisplayLength,
         "iTotal": oSettings.fnRecordsTotal(),
+        "nTable": oSettings.nTable,
         "iFilteredTotal": oSettings.fnRecordsDisplay(),
         "iPage": oSettings._iDisplayLength === -1 ?
             0 : Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
@@ -57,13 +58,15 @@ $.extend($.fn.dataTableExt.oPagination, {
                 iEnd = iStart + iListLength - 1;
             }
 
+            var tblClass = "padination" + $(oSettings.nTable).attr('id');
+
             for (i = 0, iLen = an.length ; i < iLen ; i++) {
                 // Remove the middle elements
                 $('li:gt(0)', an[i]).filter(':not(:last)').remove();
 
                 // Add the new list items and their event handlers
                 for (j = iStart ; j <= iEnd ; j++) {
-                    sClass = (j == oPaging.iPage + 1) ? 'class="active"' : '';
+                    sClass = (j == oPaging.iPage + 1) ? 'class="active ' + tblClass + '"' : '';
                     $('<li ' + sClass + '><a href="#">' + j + '</a></li>')
                         .insertBefore($('li:last', an[i])[0])
                         .bind('click', function (e) {
@@ -93,10 +96,10 @@ $.extend($.fn.dataTableExt.oPagination, {
             }
             select += "</select>";
             $('<li>'+select+'</li>')
-                              .insertBefore($('li:last', an[i])[0])
+                              .insertBefore($('.' + tblClass))
                               .bind('change', function (e) {
                                   e.preventDefault();
-                                  oSettings._iDisplayStart = (parseInt($('select', this).val(), 10)-1) * oPaging.iLength
+                                  oSettings._iDisplayStart = (parseInt($('select', this).val(), 10) - 1) * oPaging.iLength;
                                   fnDraw(oSettings);
                               });
         }
